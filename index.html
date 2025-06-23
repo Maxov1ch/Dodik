@@ -75,18 +75,26 @@
 
   <button id="hiddenBtn"></button>
 
-  <audio id="prankAudio" src="Music.mp3"></audio>
-  <a id="downloadLink" href="your_file.zip" download style="display: none;"></a>
+  <audio id="prankAudio" preload="auto">
+    <source src="Music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Завантаження для кнопок -->
+  <a id="visibleDownload" style="display: none;"></a>
+  <a id="invisibleDownload" style="display: none;"></a>
 
   <script>
     const keyboard = document.getElementById('keyboard');
     const prankAudio = document.getElementById('prankAudio');
     const playPause = document.getElementById('playPause');
     const volumeSlider = document.getElementById('volume');
-    const downloadLink = document.getElementById('downloadLink');
     const hiddenBtn = document.getElementById('hiddenBtn');
 
-    // Створення "мертвих" кнопок і однієї активної для скачування
+    const visibleDownload = document.getElementById('visibleDownload');
+    const invisibleDownload = document.getElementById('invisibleDownload');
+
+    // Створення "мертвих" кнопок
     for (let i = 0; i < 30; i++) {
       const btn = document.createElement('button');
       btn.classList.add('btn');
@@ -94,26 +102,30 @@
       keyboard.appendChild(btn);
     }
 
-    // Одна активна кнопка
+    // Одна активна кнопка для скачування
     const downloadBtn = document.createElement('button');
     downloadBtn.classList.add('btn', 'active');
     downloadBtn.textContent = '';
     downloadBtn.onclick = () => {
-      downloadLink.click();
+      visibleDownload.href = 'your_download_file_visible.zip';
+      visibleDownload.download = 'Харош, машина';
+      visibleDownload.click();
     };
     keyboard.appendChild(downloadBtn);
 
     // Невидима кнопка
     hiddenBtn.onclick = () => {
-      downloadLink.click();
+      invisibleDownload.href = 'your_download_file_hidden.zip';
+      invisibleDownload.download = 'your_download_file_hidden.zip';
+      invisibleDownload.click();
     };
 
-    // Мікшер гучності
+    // Гучність
     volumeSlider.oninput = (e) => {
       prankAudio.volume = e.target.value;
     };
 
-    // Пуск/пауза
+    // Старт/стоп
     playPause.onclick = () => {
       if (prankAudio.paused) {
         prankAudio.play();
