@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Just a bunch of buttons</title>
+  <style>
+    body {
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .keyboard {
+      display: grid;
+      grid-template-columns: repeat(8, auto);
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 10px;
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .btn.active {
+      background-color: #4CAF50;
+      cursor: pointer;
+    }
+
+    #hiddenBtn {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      width: 100px;
+      height: 50px;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .volume-container {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    #volume {
+      width: 200px;
+    }
+
+    #playPause {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #aaa;
+      margin-left: 10px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="keyboard" id="keyboard"></div>
+
+  <div class="volume-container">
+    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
+    <button id="playPause"></button>
+  </div>
+
+  <button id="hiddenBtn"></button>
+
+  <audio id="prankAudio" src="your_audio.mp3"></audio>
+  <a id="downloadLink" href="your_file.zip" download style="display: none;"></a>
+
+  <script>
+    const keyboard = document.getElementById('keyboard');
+    const prankAudio = document.getElementById('prankAudio');
+    const playPause = document.getElementById('playPause');
+    const volumeSlider = document.getElementById('volume');
+    const downloadLink = document.getElementById('downloadLink');
+    const hiddenBtn = document.getElementById('hiddenBtn');
+
+    // Створення "мертвих" кнопок і однієї активної для скачування
+    for (let i = 0; i < 30; i++) {
+      const btn = document.createElement('button');
+      btn.classList.add('btn');
+      btn.textContent = '';
+      keyboard.appendChild(btn);
+    }
+
+    // Одна активна кнопка
+    const downloadBtn = document.createElement('button');
+    downloadBtn.classList.add('btn', 'active');
+    downloadBtn.textContent = '';
+    downloadBtn.onclick = () => {
+      downloadLink.click();
+    };
+    keyboard.appendChild(downloadBtn);
+
+    // Невидима кнопка
+    hiddenBtn.onclick = () => {
+      downloadLink.click();
+    };
+
+    // Мікшер гучності
+    volumeSlider.oninput = (e) => {
+      prankAudio.volume = e.target.value;
+    };
+
+    // Пуск/пауза
+    playPause.onclick = () => {
+      if (prankAudio.paused) {
+        prankAudio.play();
+      } else {
+        prankAudio.pause();
+      }
+    };
+  </script>
+</body>
+</html>
